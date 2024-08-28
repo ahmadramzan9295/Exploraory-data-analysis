@@ -1,0 +1,106 @@
+
+
+```{r setup, include=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+```
+
+## Step 1: Load the Data
+
+```{r load-data}
+# Load the dataset
+data <- read_csv("All the Intermediate Colleges in Pakistan.csv")
+
+# Display the first few rows
+head(data)
+```
+
+## Step 2: Basic Data Overview
+
+```{r data-overview}
+# Get a summary of the dataset
+summary(data)
+
+# Check the structure of the dataset
+str(data)
+
+# Check for missing values
+sapply(data, function(x) sum(is.na(x)))
+```
+
+## Step 3: Handling Missing Data
+
+```{r handle-missing-data}
+# Handling missing data - for simplicity, remove rows with NA values
+data_clean <- data %>%
+  drop_na()
+
+# Alternatively, you can fill missing values or use more complex imputation techniques.
+```
+
+## Step 4: Univariate Analysis
+
+### Distribution of Sector
+
+```{r univariate-sector}
+# Analyze the distribution of the 'Sector' variable
+table(data_clean$Sector)
+
+# Plot for Sector
+ggplot(data_clean, aes(x = Sector)) +
+  geom_bar() +
+  labs(title = "Distribution of Colleges by Sector", x = "Sector", y = "Count") +
+  theme_minimal()
+```
+
+### Distribution of Rating
+
+```{r univariate-rating}
+# Analyze the 'Rating' variable
+table(data_clean$Rating)
+
+# Plot the distribution of Ratings
+ggplot(data_clean, aes(x = Rating)) +
+  geom_bar() +
+  labs(title = "Distribution of College Ratings", x = "Rating", y = "Count") +
+  theme_minimal()
+```
+
+## Step 5: Bivariate Analysis
+
+### Relationship Between Sector and Rating
+
+```{r bivariate-sector-rating}
+# Relationship between Sector and Rating
+ggplot(data_clean, aes(x = Sector, fill = Rating)) +
+  geom_bar(position = "dodge") +
+  labs(title = "Sector vs. Rating", x = "Sector", y = "Count") +
+  theme_minimal()
+```
+
+### Relationship Between Sector and Study Program
+
+```{r bivariate-sector-studyprogram}
+# Relationship between Study Program and Sector
+ggplot(data_clean, aes(x = Sector, fill = "Study Program")) +
+  geom_bar(position = "fill") +
+  labs(title = "Study Program vs. Sector", x = "Sector", y = "Proportion") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  theme_minimal()
+```
+
+## Step 6: Multivariate Analysis
+
+### Relationship Between Location, Sector, and Rating
+
+```{r multivariate-location-sector-rating}
+# Relationship between Location, Sector, and Rating
+ggplot(data_clean, aes(x = Location, y = Sector, color = Rating)) +
+  geom_point() +
+  labs(title = "Location vs. Sector vs. Rating") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  theme_minimal()
+```
+
