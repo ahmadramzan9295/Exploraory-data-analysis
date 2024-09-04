@@ -1,0 +1,39 @@
+# Load necessary libraries
+library(dplyr)
+library(ggplot2)
+library(tidyr)
+
+# Load the Titanic dataset
+data("Titanic")
+titanic <- as.data.frame(Titanic)
+
+# Convert to a format suitable for analysis (repeated rows based on frequency)
+titanic <- titanic %>% 
+  uncount(Freq)
+
+# Check the structure of the dataset
+str(titanic)
+
+# Survival rate by gender
+ggplot(titanic, aes(x = Survived, fill = Sex)) +
+  geom_bar(position = "dodge") +
+  labs(x = "Survived (0 = No, 1 = Yes)", y = "Count", fill = "Gender") +
+  ggtitle("Survival Rate by Gender")
+
+# Survival rate by class
+ggplot(titanic, aes(x = Survived, fill = Class)) +
+  geom_bar(position = "dodge") +
+  labs(x = "Survived (0 = No, 1 = Yes)", y = "Count", fill = "Class") +
+  ggtitle("Survival Rate by Class")
+
+# Survival rate by age group (child/adult)
+ggplot(titanic, aes(x = Survived, fill = Age)) +
+  geom_bar(position = "dodge") +
+  labs(x = "Survived (0 = No, 1 = Yes)", y = "Count", fill = "Age Group") +
+  ggtitle("Survival Rate by Age Group")
+
+# Survival rate by gender within classes
+ggplot(titanic, aes(x = Survived, fill = interaction(Class, Sex))) +
+  geom_bar(position = "dodge") +
+  labs(x = "Survived (0 = No, 1 = Yes)", y = "Count", fill = "Class & Gender") +
+  ggtitle("Survival Rate by Class and Gender")
